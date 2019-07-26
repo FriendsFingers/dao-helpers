@@ -1,0 +1,42 @@
+{
+  "name": "dao-helpers",
+  "version": "0.1.0",
+  "description": "Commands to do stuff with FriendsFingers' Smart Contracts",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/FriendsFingers/dao-helpers/issues"
+  },
+  "license": "MIT",
+  "author": "FriendsFingers (https://www.friendsfingers.com/)",
+  "contributors": [
+    {
+      "name": "Vittorio Minacori",
+      "url": "https://github.com/vittominacori"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FriendsFingers/dao-helpers.git"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-mocha-no-only": "^1.1.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "log4js": "^4.5.1",
+    "prompt-sync": "^4.1.7",
+    "truffle-contract": "^4.0.26",
+    "truffle-hdwallet-provider": "^1.0.15",
+    "truffle-wallet-provider": "^0.0.5",
+    "web3": "0.20.6",
+    "yargs": "^13.3.0"
+  }
+}

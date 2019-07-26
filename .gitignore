@@ -1,0 +1,33 @@
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+node_modules
+
+# Debug log from npm
+npm-debug.log
+
+# local env variables
+.env
+
+# macOS
+.DS_Store
+
+# npm package
+package-lock.json
+
+# IntelliJ IDE
+.idea
+
+# folder
+keystore
+input
+output
+logs
