@@ -1,46 +1,56 @@
-## Commands to do stuffs with FriendsFingers' Smart Contracts
+# Commands to do stuff with FriendsFingers' Smart Contracts
 
 [![MIT licensed](https://img.shields.io/github/license/FriendsFingers/dao-helpers.svg)](https://github.com/FriendsFingers/dao-helpers/blob/master/LICENSE)
 
-### Installation
+## Installation
 
 ```bash
 npm install
 ```
 
-### Usage
+## Usage
 
 ```bash
 node helpers
 ```
 
-You will be prompted with
-
-```bash
-enter command (tab to autocomplete):
-```
-
-Available tasks `members`.
-
-#### members
-
-Analyse DAO and produce an array with members
-
-### Examples
-
-#### Development
+### Development
 
 ```bash
 node helpers --contract=0x123
 ```
 
-#### Main Ethereum Network
+### Main Ethereum Network
 
 ```bash
 node helpers --endpoint=https://mainnet.infura.io --net-id=1 --contract=0x123
 ```
 
-### Options
+You will be prompted with
+
+```bash
+enter contract (tab to autocomplete):
+```
+
+Available contracts `['DAO']`.
+
+```bash
+enter method (tab to autocomplete):
+```
+
+Available methods `['getMembers', 'generateAirdropArray']`.
+
+### DAO
+
+#### getMembers
+
+Analyse DAO and produce an array with members
+
+#### generateAirdropArray
+
+Analyse members and produce an array with airdrop amount
+
+## Options
 
 ```bash
 --endpoint, -e      ethereum rpc endpoint.                              [string]    [default: "http://127.0.0.1:8545"]

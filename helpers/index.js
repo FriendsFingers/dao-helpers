@@ -1,42 +1,49 @@
-const prompt = require('prompt-sync')({
+const contracts = {
+  DAO: ['getMembers', 'generateAirdropArray'],
+};
+
+const contractPrompt = require('prompt-sync')({
   sigInt: true,
-  autocomplete: complete(['members', 'example']),
+  autocomplete: complete(Object.keys(contracts)),
 });
 
-const command = prompt('enter command (tab to autocomplete): ', { value: '' });
+const contract = contractPrompt('enter contract (tab to autocomplete): ', { value: '' });
 
-let Executor = null;
+if (Object.prototype.hasOwnProperty.call(contracts, contract)) {
+  const methodPrompt = require('prompt-sync')({
+    sigInt: true,
+    autocomplete: complete(contracts[contract]),
+  });
 
-switch (command) {
-case 'members':
-  Executor = require('./core/members.js');
-  break;
-case 'example':
-  Executor = require('./core/example.js');
-  break;
-default:
-  console.error(`command ${command} not found!`);
+  const method = methodPrompt('enter method (tab to autocomplete): ', { value: '' });
+
+  if (contracts[contract].includes(method)) {
+    const src = `./core/${contract}.js`;
+    const Executor = require(src);
+
+    new Executor(`${contract}.${method}`)[method]()
+      .then(() => {
+        console.log(`\ncommand ${contract}.${method} done! 💪`);
+      })
+      .catch(err => {
+        console.error(`\ncommand ${contract}.${method} fail! ❌️`);
+        console.error(err);
+        // process.exit(1);
+      });
+  } else {
+    console.error(`method ${method} not found!`);
+  }
+} else {
+  console.error(`contract ${contract} not found!`);
 }
 
-if (Executor) {
-  new Executor(command).start()
-    .then(() => {
-      console.log(`\ncommand ${command} done! 💪`);
-    })
-    .catch(err => {
-      console.error(`\ncommand ${command} fail! ❌️`);
-      console.error(err);
-      // process.exit(1);
-    });
-}
-
-function complete (commands) {
+function complete (items) {
   return function (str) {
     let i;
     const ret = [];
-    for (i = 0; i < commands.length; i++) {
-      if (commands[i].indexOf(str) === 0) {
-        ret.push(commands[i]);
+    for (i = 0; i < items.length; i++) {
+      if (items[i].indexOf(str) === 0) {
+        ret.push(items[i]);
       }
     }
     return ret;

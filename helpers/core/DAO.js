@@ -1,13 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const { getContract, promisify } = require('../lib/web3Helper');
+const { web3, getContract, promisify } = require('../lib/web3Helper');
+const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const fileExists = (...args) => promisify(fs.stat)(...args).then(() => true).catch(() => false);
 
 const Dapp = require('../lib/dapp.js');
 
 const DAOArtifact = require('../abi/DAO');
 
-class Members {
+class DAO {
   constructor (command) {
     this.dapp = new Dapp(command);
   }
@@ -21,7 +23,7 @@ class Members {
     global.logger.info(`Set instance to ${this.instance.address}`);
   }
 
-  async start () {
+  async getMembers () {
     await this.init();
 
     global.logger.info('Starting process...');
@@ -44,6 +46,35 @@ class Members {
 
     await writeFile(outputFile, JSON.stringify(addressesMap, null, 2), 'utf8');
   }
+
+  async generateAirdropArray () {
+    const inputFile = path.resolve(this.dapp.input);
+    const airdropArrayFile = path.resolve(this.dapp.output, 'airdrop_array.json');
+
+    const members = (await fileExists(inputFile)) ? JSON.parse(await readFile(inputFile)) : [];
+
+    const airdropArray = {
+      accounts: [],
+      amounts: [],
+    };
+
+    let i = 1;
+    for (const member of members) {
+      airdropArray.accounts.push(member.address);
+
+      const airdropValue = 1000 + Math.min(member.stakedTokens, 5000);
+
+      airdropArray.amounts.push(web3.toWei(airdropValue));
+
+      global.logger.info(
+        `${i}/${members.length}: Address ${member.address}, staked: ${member.stakedTokens}, airdrop: ${airdropValue}`
+      );
+
+      await writeFile(airdropArrayFile, JSON.stringify(airdropArray, null, 2), 'utf8');
+
+      i++;
+    }
+  }
 }
 
-module.exports = Members;
+module.exports = DAO;
